@@ -1,11 +1,11 @@
 import numpy as np
 import tkinter as tk
-from tkinter import messagebox, ttk
+from tkinter import ttk
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import time
 
-# Cache untuk kedua metode
+# Cache untuk kedua metode, dengan penyesuaian untuk menyimpan waktu eksekusi
 cache_brute_force = {}
 cache_dnc = {}
 
@@ -13,12 +13,6 @@ def calculate_num_points(iteration):
     return 2 ** (iteration + 1) - 1
 
 def bezier_quadratic_brute_force(P0, P1, P2, iteration):
-    P0, P1, P2 = np.array(P0), np.array(P1), np.array(P2)  # Pastikan ini numpy arrays
-    if iteration == 0:
-        # Hitung titik tengah antara setiap pasangan titik kontrol
-        M01 = (P0 + P1) / 2
-        M12 = (P1 + P2) / 2
-        return np.array([M01, M12])
     num_points = calculate_num_points(iteration)
     t_values = np.linspace(0, 1, num_points)
     curve_points = []
@@ -30,12 +24,6 @@ def bezier_quadratic_brute_force(P0, P1, P2, iteration):
     return curve_points
 
 def bezier_quadratic_divide_and_conquer(P0, P1, P2, iteration):
-    P0, P1, P2 = np.array(P0), np.array(P1), np.array(P2)
-    if iteration == 0:
-        # Hitung titik tengah antara setiap pasangan titik kontrol
-        M01 = (P0 + P1) / 2
-        M12 = (P1 + P2) / 2
-        return np.array([M01, M12])
     num_points = calculate_num_points(iteration)
     t_values = np.linspace(0, 1, num_points)
     curve_points = []
@@ -57,7 +45,7 @@ def parse_control_points(entry):
         return None
 
 def update_plot(event=None):
-    global iteration_slider, entry_P0, entry_P1, entry_P2, cache_brute_force, cache_dnc
+    global iteration_slider, entry_P0, entry_P1, entry_P2
     iteration = int(iteration_slider.get())
     P0 = parse_control_points(entry_P0.get())
     P1 = parse_control_points(entry_P1.get())
@@ -65,40 +53,37 @@ def update_plot(event=None):
     if None in (P0, P1, P2):
         return
 
-    if P0 is not None and P1 is not None and P2 is not None:
+    fig.clear()
+
+    # Handle Brute Force
+    ax1 = fig.add_subplot(121)
+    if iteration not in cache_brute_force:
         start_time = time.time()
         points_brute_force = bezier_quadratic_brute_force(P0, P1, P2, iteration)
         brute_force_time = time.time() - start_time
-
-        start_time = time.time()
-        points_dnc = bezier_quadratic_divide_and_conquer(P0, P1, P2, iteration)
-        dnc_time = time.time() - start_time
-
-    fig.clear()
-
-    # Plot for Brute Force
-    ax1 = fig.add_subplot(121)
-    if iteration in cache_brute_force:
-        points_brute_force = cache_brute_force[iteration]
+        cache_brute_force[iteration] = {'points': points_brute_force, 'time': brute_force_time}
     else:
-        points_brute_force = bezier_quadratic_brute_force(P0, P1, P2, iteration)
-        cache_brute_force[iteration] = points_brute_force
+        points_brute_force = cache_brute_force[iteration]['points']
+        brute_force_time = cache_brute_force[iteration]['time']
     ax1.plot(points_brute_force[:, 0], points_brute_force[:, 1], 'go-', label=f"Brute Force (Iter: {iteration})")
     ax1.plot([P0[0], P1[0], P2[0]], [P0[1], P1[1], P2[1]], 'r--', label="Control Points")
     ax1.legend()
-    ax1.set_title(f"Brute Force\nExecution Time: {cache_brute_force[iteration]['time']:.6f} sec")
+    ax1.set_title(f"Brute Force\nExecution Time: {brute_force_time:.6f} sec")
 
-    # Plot for Divide and Conquer
+    # Handle Divide and Conquer
     ax2 = fig.add_subplot(122)
-    if iteration in cache_dnc:
-        points_dnc = cache_dnc[iteration]
-    else:
+    if iteration not in cache_dnc:
+        start_time = time.time()
         points_dnc = bezier_quadratic_divide_and_conquer(P0, P1, P2, iteration)
-        cache_dnc[iteration] = points_dnc
+        dnc_time = time.time() - start_time
+        cache_dnc[iteration] = {'points': points_dnc, 'time': dnc_time}
+    else:
+        points_dnc = cache_dnc[iteration]['points']
+        dnc_time = cache_dnc[iteration]['time']
     ax2.plot(points_dnc[:, 0], points_dnc[:, 1], 'bo-', label=f"Divide & Conquer (Iter: {iteration})")
     ax2.plot([P0[0], P1[0], P2[0]], [P0[1], P1[1], P2[1]], 'r--', label="Control Points")
     ax2.legend()
-    ax2.set_title(f"Divide & Conquer\nExecution Time: {cache_dnc[iteration]['time']:.6f} sec")
+    ax2.set_title(f"Divide & Conquer\nExecution Time: {dnc_time:.6f} sec")
 
     canvas.draw()
 
