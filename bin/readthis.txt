@@ -1,0 +1,1 @@
+Since i used python for the program, the bin folder here is no longer useful, go straight to the src folder.
