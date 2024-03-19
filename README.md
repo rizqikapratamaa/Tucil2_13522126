@@ -1,5 +1,5 @@
 # Tucil2_13522126
-> Outline a brief description of your project.
+> This project aims to visualize quadratic bézier curves using two different algorithms: brute force and divide and conquer.
 
 ## Table of Contents
 * [General Info](#general-information)
@@ -9,76 +9,51 @@
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
-* [Acknowledgements](#acknowledgements)
+* [How to Use](#how-to-use)
 * [Contact](#contact)
 <!-- * [License](#license) -->
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
+This project visualizes quadratic bézier curves using two different algorithms: brute force and divide and conquer. The purpose is to compare the execution time and understand the complexity of these algorithms in generating quadratic bézier curves.
 <!-- You don't have to answer all the questions - just the ones relevant to your project. -->
 
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- Python
+- Tkinter
+- Matplotlib
+- NumPy
 
 
 ## Features
-List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- Visualization of quadratic bézier curves
+- Visualization of multi-points bézier curves
+- Comparison of execution time between brute force and divide and conquer algorithms
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
+![Example screenshot](./test/7.png)
 <!-- If you have screenshots you'd like to share, include them here. -->
 
-
-## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
-
-## Usage
-How does one go about using it?
-Provide various use cases and code examples here.
-
-`write-your-code-here`
+### Program Execution
+    git clone https://github.com/rizqikapratamaa/Tucil2_13522126
+    cd Tucil1_13522126
+    pip install -r requirements.txt
+    cd src
+    python main.py
 
 
 ## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+Project is complete
 
 
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
-- Feature to be added 1
-- Feature to be added 2
-
-
-## Acknowledgements
-Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
+## How to Use
+Upon running main.py, the application window will appear with two tabs: "Three Points" and "N Points". In the "Three Points" tab, you can input the coordinates of three control points and adjust the number of iterations using the slider to visualize the quadratic Bezier curve. In the "N Points" tab, you can input multiple control points separated by semicolons and adjust the number of iterations to visualize the Bezier curve.
 
 
 ## Contact
-Created by [@flynerdpl](https://www.flynerd.pl/) - feel free to contact me!
+Created by [@rizqikapratamaa](https://www.instagram.com/rizqikapratamaa) - feel free to contact me!
 
 
 <!-- Optional -->
